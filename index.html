@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Website</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Products List</h1>
+    <table id="productsTable" border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Buying Price</th>
+                <th>Selling Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Product A</td>
+                <td>$10</td>
+                <td>$15</td>
+            </tr>
+            <tr>
+                <td>Product B</td>
+                <td>$20</td>
+                <td>$25</td>
+            </tr>
+            <tr>
+                <td>Product C</td>
+                <td>$15</td>
+                <td>$18</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Basic Operators</h2>
+    <input type="number" id="number1" placeholder="Enter first number">
+    <input type="number" id="number2" placeholder="Enter second number">
+    <button id="addButton">Add</button>
+    <button id="subtractButton">Subtract</button>
+    <button id="multiplyButton">Multiply</button>
+    <button id="divideButton">Divide</button>
+    <p id="result"></p>
+
+    <h2>Add a New Product</h2>
+    <input type="text" id="newProductName" placeholder="Enter product name">
+    <input type="number" id="newBuyingPrice" placeholder="Enter buying price">
+    <input type="number" id="newSellingPrice" placeholder="Enter selling price">
+    <button id="addProductButton">Add Product</button>
+
+    <h2>Product Details</h2>
+    <input type="text" id="productNameInput" placeholder="Enter product name">
+    <button id="showProductButton">Show Product</button>
+    <p id="productDetails" class="hidden"></p>
+
+    <h2>Products Chart</h2>
+    <canvas id="productsChart" width="400" height="200"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var products = [
+            { name: "Product A", buyingPrice: 10, sellingPrice: 15 },
+            { name: "Product B", buyingPrice: 20, sellingPrice: 25 },
+            { name: "Product C", buyingPrice: 15, sellingPrice: 18 }
+        ];
+
+        var ctx = document.getElementById('productsChart').getContext('2d');
+        var productsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: products.map(p => p.name),
+                datasets: [
+                    {
+                        label: 'Buying Price',
+                        data: products.map(p => p.buyingPrice),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Selling Price',
+                        data: products.map(p => p.sellingPrice),
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        function updateChart() {
+            productsChart.data.labels = products.map(p => p.name);
+            productsChart.data.datasets[0].data = products.map(p => p.buyingPrice);
+            productsChart.data.datasets[1].data = products.map(p => p.sellingPrice);
+            productsChart.update();
+        }
+
+        function updateTable() {
+            var tableBody = document.querySelector('#productsTable tbody');
+            tableBody.innerHTML = '';
+            products.forEach(function(product) {
+                var row = document.createElement('tr');
+                var nameCell = document.createElement('td');
+                var buyingPriceCell = document.createElement('td');
+                var sellingPriceCell = document.createElement('td');
+
+                nameCell.textContent = product.name;
+                buyingPriceCell.textContent = '$' + product.buyingPrice;
+                sellingPriceCell.textContent = '$' + product.sellingPrice;
+
+                row.appendChild(nameCell);
+                row.appendChild(buyingPriceCell);
+                row.appendChild(sellingPriceCell);
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Initial table update
+        updateTable();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
